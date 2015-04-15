@@ -301,13 +301,13 @@ gcdLog :: Number -> Number -> Writer [String] Number
 We only have to change our function slightly to log the two inputs at each step:
 
 ```haskell
-gcd n 0 = return n
-gcd 0 m = return m
-gcd n m = do
+gcdLog n 0 = return n
+gcdLog 0 m = return m
+gcdLog n m = do
   tell ["gcd " ++ show n ++ " " ++ show m]
   if n > m 
-    then gcd (n - m) m 
-    else gcd n (m - n)
+    then gcdLog (n - m) m 
+    else gcdLog n (m - n)
 ```
 
 We can run a computation in the `Writer` monad by using either of the `execWriter` or `runWriter` functions:
@@ -327,7 +327,7 @@ We can test our modified function in `psci`:
 > :i Control.Monad.Writer
 > :i Control.Monad.Writer.Class
 
-> runWriter (gcd 21 15)
+> runWriter (gcdLog 21 15)
 
 Tuple 3 ["gcd 21 15","gcd 6 15","gcd 6 9","gcd 6 3","gcd 3 3"]
 ```
